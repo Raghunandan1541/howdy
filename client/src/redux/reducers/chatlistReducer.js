@@ -1,9 +1,10 @@
 import { GLOBALTYPES } from '../actions/globalTypes'
 
+const initialState = []
 
-const peerReducer = (state = null, action) => {
+const chatlistReducer = (state = initialState, action) => {
     switch (action.type){
-        case GLOBALTYPES.PEER:
+        case GLOBALTYPES.CONVERSATIONS:
             return action.payload;
         default:
             return state;
@@ -11,4 +12,4 @@ const peerReducer = (state = null, action) => {
 }
 
 
-export default peerReducer
+export default chatlistReducer

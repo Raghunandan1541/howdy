@@ -1,15 +1,14 @@
 import { combineReducers } from 'redux'
 import auth from './authReducer'
 import alert from './alertReducer'
+import access from './accessReducer'
+import chatlist from './chatlistReducer'
 import socket from './socketReducer'
-import peer from './peerReducer'
-import message from './messageReducer'
-
 
 export default combineReducers({
-    auth,
-    alert,
-    socket,
-    peer,
-    message
+	auth,
+	alert,
+	access,
+	chatlist,
+	socket
 })

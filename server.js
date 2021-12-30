@@ -3,7 +3,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-const SocketServer = require('./socketServer')
 const { ExpressPeerServer } = require('peer')
 const path = require('path')
 
@@ -18,9 +17,6 @@ app.use(cookieParser())
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 
-io.on('connection', socket => {
-    SocketServer(socket)
-})
 
 // Create peer server
 ExpressPeerServer(http, { path: '/' })
@@ -28,8 +24,7 @@ ExpressPeerServer(http, { path: '/' })
 
 // Routes
 app.use('/api', require('./routes/authRouter'))
-app.use('/api', require('./routes/fetchRouter'))
-app.use('/api', require('./routes/messageRouter'))
+app.use('/api', require('./routes/apiRouter'))
 
 
 const URI = process.env.MONGODB_URL

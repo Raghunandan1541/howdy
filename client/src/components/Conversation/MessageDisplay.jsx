@@ -1,25 +1,19 @@
-import React from 'react'
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 
-function MessageDisplay({user, msg, msgs}) {
+function MessageDisplay({ message }) {
+
+	const {auth} = useSelector(state => state)
+	const [own, setOwn] = useState(false)
+
+	useEffect(() => {
+		setOwn(message.sender === auth.user._id)
+	}, [auth.user._id])
+
 	return (
-		<>
-			<div className="chat__title">
-				<span>{user.username}</span>
-			</div>
-
-			<div className="you__content">
-				{
-					msg.text && 
-					<div className="chat__text">
-						{msg.text}
-					</div>
-				}
-			</div>
-
-			<div className="chat__time">
-				{new Date(msg.createdAt).toLocaleString()}
-			</div>
-		</>
+		<div className={own ? 'messages own' : 'messages'}>
+			{message.text}
+		</div>
 	)
 }
 
