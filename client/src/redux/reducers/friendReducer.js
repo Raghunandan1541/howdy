@@ -1,10 +1,8 @@
 import { GLOBALTYPES } from '../actions/globalTypes'
 
-const initialState = []
-
-const chatlistReducer = (state = initialState, action) => {
+const friendIdReducer = (state = '', action) => {
     switch (action.type){
-        case GLOBALTYPES.CONVERSATIONS:
+        case GLOBALTYPES.FRIEND:
             return action.payload;
         default:
             return state;
@@ -12,4 +10,4 @@ const chatlistReducer = (state = initialState, action) => {
 }
 
 
-export default chatlistReducer
+export default friendIdReducer

@@ -62,7 +62,7 @@ const apiCtrl = {
 			}
 			else {
 				const savedConversation = await newConversation.save();
-				res.status(200).json(savedConversation);
+				res.status(200).json([savedConversation]);
 			}
 
 		} catch (err) {

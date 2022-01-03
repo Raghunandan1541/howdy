@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import {useDispatch} from 'react-redux'
 
 import './chat.css'
-import { getchatusers } from '../../redux/actions/chatlistAction';
+import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 
 function Conversation({list, currUser}) {
 
@@ -19,7 +19,7 @@ function Conversation({list, currUser}) {
 
 		const getUser = async () => {
 			try {
-				const res = await axios(`/api/user?userId=${friendId}`);
+				const res = await axios.get(`/api/user?userId=${friendId}`);
 				setUser(res.data);
 			} catch (err) {
 				console.log(err);
@@ -29,12 +29,16 @@ function Conversation({list, currUser}) {
 		getUser();
 	}, [currUser, list])
 
-	const handleClick = () => {
-		dispatch(getchatusers(currUser))
+	const handleClick = (e) => {
+		e.preventDefault();
+		dispatch({
+			type: GLOBALTYPES.FRIEND,
+			payload: e.target.getAttribute('friend_id')
+		})
 	}
 
 	return (
-		<div className='list__design' onClick={handleClick} >
+		<div className='list__design' friend_id={list.members[1]} onClick={handleClick} >
 			{user?.username}
 		</div>
 	)

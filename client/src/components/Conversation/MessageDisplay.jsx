@@ -1,17 +1,8 @@
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
 
-function MessageDisplay({ message }) {
-
-	const {auth} = useSelector(state => state)
-	const [own, setOwn] = useState(false)
-
-	useEffect(() => {
-		setOwn(message.sender === auth.user._id)
-	}, [auth.user._id])
+function MessageDisplay({ message, own }) {
 
 	return (
-		<div className={own ? 'messages own' : 'messages'}>
+		<div className={own ? 'messages sender' : 'messages'}>
 			{message.text}
 		</div>
 	)

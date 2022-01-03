@@ -9,5 +9,4 @@ const accessReducer = (state = false, action) => {
     }
 }
 
-
 export default accessReducer

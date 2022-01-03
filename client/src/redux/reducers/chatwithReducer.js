@@ -1,9 +1,10 @@
 import { GLOBALTYPES } from '../actions/globalTypes'
 
+const initialState = []
 
-const socketReducer = (state = [], action) => {
+const chatwithReducer = (state = initialState, action) => {
     switch (action.type){
-        case GLOBALTYPES.SOCKET:
+        case GLOBALTYPES.CONVERSATIONS:
             return action.payload;
         default:
             return state;
@@ -11,4 +12,4 @@ const socketReducer = (state = [], action) => {
 }
 
 
-export default socketReducer
+export default chatwithReducer

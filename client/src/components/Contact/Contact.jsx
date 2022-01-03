@@ -1,15 +1,14 @@
 import axios from 'axios'
 import React, {useEffect, useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import { chatlist } from '../../redux/actions/chatlistAction'
-import List from '../Home/List'
+import List from './ListDisplay'
+import './contact.css'
 
 function Contact() {
 
 	const [contacts, setContacts] = useState(null)
 
-	const dispatch = useDispatch()
 	const {auth} = useSelector(state => state)
 
 	useEffect(() => {
@@ -25,18 +24,31 @@ function Contact() {
 			})
 	}, [])
 	
-	const handleClick = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault()
+
 		const userData = {
 			senderId: auth.user._id,
 			receiverId: e.target.getAttribute('data_id')
 		}
-		dispatch(chatlist(userData));
+		
+		try {
+			const res = await axios.post('/api/conversations', userData)
+			setContacts(res.data)
+		} catch (error) {
+			console.log(error)
+		}
 	}
-	
+	console.log(contacts)
 	return (
 		<React.Fragment>
-			{contacts && <List list={contacts} click={handleClick} />}
+			{contacts && contacts.map((list, index) => {
+				return (list._id !== auth.user._id ) ? 
+					<div key={index}>
+						<List list={list} click={handleSubmit} />
+					</div> 
+					: ''}
+			)}
 		</React.Fragment>
 	)
 }

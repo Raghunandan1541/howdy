@@ -30,9 +30,8 @@
 	color: #000;
 }
 
-.list__design {
-	font-size: large;
-	padding: 1rem;
-	border-bottom: 1px solid #5a5a5a;
-	cursor: pointer;
+.instructions {
+	width: 30vw;
+	height: calc(100vh - 2.7rem);
+	border-left: 1px solid #000000;
 }
