@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
-import { format } from 'timeago.js'
+import {io} from 'socket.io-client'
 
 import './conversation.css'
 import MessageDisplay from './MessageDisplay'
@@ -10,9 +10,28 @@ function Conversation() {
 
 	const [newMessage, setNewMessage] = useState('')
 	const [messages, setMessages] = useState([])
+	const [arrivalMessage, setArrivalMessage] = useState(null)
 
 	const { auth, access, chatwith, friend } = useSelector(state => state)
 	const scrollRef = useRef()
+	const socket = useRef()
+	
+	useEffect(() => {
+		socket.current = io('ws://localhost:8900')
+		socket.current.on("getMessage", (data) => {
+			setArrivalMessage({
+				sender: data.senderId,
+				text: data.text,
+				createdAt: Date.now(),
+			});
+		  });
+	}, [])
+
+	useEffect(() => {
+		arrivalMessage &&
+		chatwith.map(data => data.members).includes(arrivalMessage.sender) &&
+		setMessages((prev) => [...prev, arrivalMessage]);
+	}, [arrivalMessage, chatwith]);
 
 	useEffect(() => {
 		chatwith.map((newId) => {
@@ -47,17 +66,14 @@ function Conversation() {
 			conversationId: cId[0],
 		}
 
-		const receiverId = chatwith.members.find(
-			(member) => member !== auth.user._id
-		);
-
-		console.log(receiverId)
+		const receiverId = chatwith.map(data => data.members[1])[0]
+		
 	  
-		// socket.current.emit("sendMessage", {
-		// 	senderId: auth.user._id,
-		// 	receiverId,
-		// 	text: newMessage,
-		// });
+		socket.current.emit("sendMessage", {
+			senderId: auth.user._id,
+			receiverId,
+			text: newMessage,
+		});
 
 		try {
 			const res = await axios.post("/api/messages", message);
@@ -75,18 +91,12 @@ function Conversation() {
 					<div className='contain__messages'>
 						{messages.map((msg, index) => {
 							return (
-								<div ref={scrollRef} key={index} className="msg__container">
-									<MessageDisplay 
+									<MessageDisplay
+										scrollRef={scrollRef} 
+										key={index} 
 										own={msg.sender === auth.user._id} 
 										message={msg} 
 									/>
-									<div 
-										className={(msg.sender === auth.user._id) ? 
-										'timer sender__timer' : 'timer'}
-									>
-										{format(msg.createdAt)}
-									</div>
-								</div>
 							)
 						})}
 					</div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom'
 import {io} from 'socket.io-client'
@@ -14,7 +14,6 @@ import Instruction from './Instruction';
 function Home() {
 
 	const dispatch = useDispatch();
-	const [onlineUsers, setOnlineUsers] = useState([])
 
 	const socket = useRef()
 	const {auth} = useSelector(state => state)
@@ -25,9 +24,9 @@ function Home() {
 	
 	useEffect(() => {
 		socket.current.emit('addUser', auth.user._id)
-		socket.current.on("getUsers", (users) => {
-			console.log(users)
-		});
+		// socket.current.on("getUsers", users => {
+		// 	console.log('user connected')
+		// });
 	}, [auth])
 
 	return (

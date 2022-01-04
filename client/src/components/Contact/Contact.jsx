@@ -33,13 +33,11 @@ function Contact() {
 		}
 		
 		try {
-			const res = await axios.post('/api/conversations', userData)
-			setContacts(res.data)
+			await axios.post('/api/conversations', userData)
 		} catch (error) {
 			console.log(error)
 		}
 	}
-	console.log(contacts)
 	return (
 		<React.Fragment>
 			{contacts && contacts.map((list, index) => {

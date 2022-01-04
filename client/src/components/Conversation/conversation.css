@@ -14,6 +14,11 @@
 	outline: none;
 }
 
+.contain__messages {
+	overflow-y: scroll;
+	height: calc(100vh - 5rem);
+}
+
 .msg__container {
 	width: 100%;
 	display: flex;
@@ -51,4 +56,22 @@
 	font-size: 3.5rem;
 	color: #cccccc;
 	cursor: default;
+}
+
+::-webkit-scrollbar {
+	width: 0.4rem;
+}
+
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 0.1rem;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #aaaaaa;
+	border-radius: 0.1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #777777;
 }
