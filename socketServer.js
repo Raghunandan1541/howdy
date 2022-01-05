@@ -28,7 +28,7 @@ const socketServer = (socket, io) => {
 	
 		io.to(user.socketId).emit("getMessage", {
 			senderId,
-			text,
+			text
 		});
 	});
 

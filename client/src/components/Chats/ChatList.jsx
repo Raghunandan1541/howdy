@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
 
-import { access } from '../../redux/actions/accessAction';
-import { GLOBALTYPES } from '../../redux/actions/globalTypes';
+import { access, chatwith } from '../../redux/actions/accessAction';
 import './chat.css';
 import Conversation from './ConversationDisplay';
 
@@ -20,17 +19,14 @@ function ChatList() {
 			try {
 				const res = await axios.get(`/api/conversations/${auth.user._id}`)
 				setChatContacts(res.data)
-				dispatch({
-					type: GLOBALTYPES.CONVERSATIONS,
-					payload: res.data
-				})
+				dispatch(chatwith(res.data))
 			} catch (error) {
 				console.log(error)
 			}
 		}
 		
 		getConversations();
-	}, [auth.user._id, dispatch])
+	}, [auth, dispatch])
 
 	return (
 		<div className="chat__list">

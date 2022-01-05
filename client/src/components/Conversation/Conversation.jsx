@@ -17,14 +17,17 @@ function Conversation() {
 	const socket = useRef()
 	
 	useEffect(() => {
-		socket.current = io('ws://localhost:8900')
-		socket.current.on("getMessage", (data) => {
+		socket.current = io('ws://localhost:8900');
+
+		socket.current.on("getMessage", ({senderId, text}) => {
 			setArrivalMessage({
-				sender: data.senderId,
-				text: data.text,
+				sender: senderId,
+				text: text,
 				createdAt: Date.now(),
 			});
-		  });
+			console.log('message got')
+		});
+
 	}, [])
 
 	useEffect(() => {
@@ -37,7 +40,7 @@ function Conversation() {
 		chatwith.map((newId) => {
 			const getMessages = async () => {
 				try{
-					if(newId.members[1] === friend) {
+					if(newId.members.includes(friend)) {
 						const res = await axios.get(`/api/messages/${newId._id}`)
 						setMessages(res.data)
 					}
@@ -57,7 +60,7 @@ function Conversation() {
 		e.preventDefault()
 
 		const cId = chatwith
-			.filter(newId => (newId.members[1] === friend) ? newId._id : '' )
+			.filter(newId => (newId.members.includes(friend)) ? newId._id : '' )
 			.map(id => id._id)
 
 		const message = {
@@ -66,7 +69,8 @@ function Conversation() {
 			conversationId: cId[0],
 		}
 
-		const receiverId = chatwith.map(data => data.members[1])[0]
+		const receiverId = chatwith.map(data => data.members.includes(friend))[0]
+		console.log(receiverId)
 		
 	  
 		socket.current.emit("sendMessage", {

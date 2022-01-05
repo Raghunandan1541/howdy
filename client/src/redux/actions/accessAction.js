@@ -6,3 +6,11 @@ export const access = (data) => async (dispatch) => {
 		payload: data
 	})
 }
+
+export const chatwith = (data) => async (dispatch) => {
+
+	dispatch({
+		type: GLOBALTYPES.CONVERSATIONS,
+		payload: data
+	})
+}

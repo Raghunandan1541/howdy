@@ -4,10 +4,12 @@ import { useSelector } from 'react-redux'
 
 import List from './ListDisplay'
 import './contact.css'
+import { filtered } from '../../utils/filtered'
 
 function Contact() {
 
 	const [contacts, setContacts] = useState(null)
+	const [exists, setExists] = useState(true)
 
 	const {auth} = useSelector(state => state)
 
@@ -23,17 +25,33 @@ function Contact() {
 				return err;
 			})
 	}, [])
+
+	useEffect(() => {
+	}, [auth])
 	
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 
+		let receiverId = e.target.getAttribute('data_id');
+
 		const userData = {
 			senderId: auth.user._id,
-			receiverId: e.target.getAttribute('data_id')
+			receiverId,
 		}
 		
+		const getFriend = async () => {
+			const res = await axios.get(`/api/conversations/${auth.user._id}`)
+			const val = filtered(res.data)
+			setExists(val.map(id => id.includes(receiverId))[0])
+		}
+		getFriend();
+		
 		try {
-			await axios.post('/api/conversations', userData)
+			if(!exists) {
+				await axios.post('/api/conversations', userData)
+			} else {
+				console.log('user does not Exist')
+			}
 		} catch (error) {
 			console.log(error)
 		}
