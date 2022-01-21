@@ -25,11 +25,14 @@ const socketServer = (socket, io) => {
 
 	socket.on("sendMessage", ({ senderId, receiverId, text }) => {
 		const user = getUser(receiverId);
-	
-		io.to(user.socketId).emit("getMessage", {
+
+		const data = {
 			senderId,
 			text
-		});
+		}
+	
+		io.to(user.socketId).emit("getMessages", data);
+		
 	});
 
 	socket.on('disconnect', () => {

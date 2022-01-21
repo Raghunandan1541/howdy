@@ -5,31 +5,29 @@ import { useSelector } from 'react-redux'
 import List from './ListDisplay'
 import './contact.css'
 import { filtered } from '../../utils/filtered'
+import {getDataAPI} from '../../utils/fetchData'
 
 function Contact() {
 
 	const [contacts, setContacts] = useState(null)
-	const [exists, setExists] = useState(true)
+	const [exists, setExists] = useState(false)
 
 	const {auth} = useSelector(state => state)
 
 	useEffect(() => {
-		axios.get('/api/users')
-			.then(res => {
-				return res;
-			})
-			.then(result => {
-				setContacts(result.data.user);
-			})
-			.catch(err => {
-				return err;
-			})
-	}, [])
 
-	useEffect(() => {
-	}, [auth])
+		const getUserData = async () => {
+			try {
+				const resp = await axios.get('/api/users')
+				setContacts(resp.data.user)
+			} catch (error) {
+				console.log(error)
+			}
+		}
+		getUserData()
+	}, [])
 	
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault()
 
 		let receiverId = e.target.getAttribute('data_id');
@@ -38,23 +36,30 @@ function Contact() {
 			senderId: auth.user._id,
 			receiverId,
 		}
-		
-		const getFriend = async () => {
-			const res = await axios.get(`/api/conversations/${auth.user._id}`)
-			const val = filtered(res.data)
+
+		const getExists = async () => {
+			const res = await getDataAPI('conversations', auth.user._id)
+			const val = filtered(res)
 			setExists(val.map(id => id.includes(receiverId))[0])
 		}
-		getFriend();
-		
-		try {
-			if(!exists) {
-				await axios.post('/api/conversations', userData)
-			} else {
-				console.log('user does not Exist')
+
+		getExists()
+
+		const postUserData = async (exist) => {
+			try {
+				if(exist) {
+					await axios.post('/api/conversations', userData)
+					console.log('user Exist')
+				} else {
+					console.log('user does not Exist')
+				}
+			} catch (error) {
+				console.log(error)
 			}
-		} catch (error) {
-			console.log(error)
 		}
+
+		postUserData(exists)
+	
 	}
 	return (
 		<React.Fragment>

@@ -30,8 +30,34 @@
 	color: #000;
 }
 
-.instructions {
+.instruction {
 	width: 30vw;
 	height: calc(100vh - 2.7rem);
 	border-left: 1px solid #000000;
+}
+
+.instruction__list {
+	border-bottom: 1px solid #000000;
+}
+
+.header__design {
+	font-size: large;
+	padding: 0.5rem;
+	border-bottom: 1px solid #5a5a5a;
+	text-align: center;
+	cursor: default;
+}
+
+.instruction__line {
+	margin-left: 0.5rem;
+	line-height: 1.2rem;
+	font-weight: lighter;
+	padding: 0.5rem 0;
+}
+
+.list__design {
+	font-size: large;
+	padding: 1rem;
+	border-bottom: 1px solid #5a5a5a;
+	cursor: pointer;
 }

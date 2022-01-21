@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux'
 import './chat.css'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 
-function Conversation({list, currUser}) {
+function Conversation({members, currUser}) {
 
 	const [user, setUser] = useState(null)
 	const dispatch = useDispatch()
@@ -13,9 +13,7 @@ function Conversation({list, currUser}) {
 	
 	useEffect(() => {
 
-		const friendId = list.members.find((id) => {
-			return id !== currUser
-		});
+		const friendId = members.find((id) => id !== currUser);
 
 		const getUser = async () => {
 			try {
@@ -27,7 +25,8 @@ function Conversation({list, currUser}) {
 		};
 
 		getUser();
-	}, [currUser, list])
+	}, [currUser, members])
+
 
 	const handleClick = (e) => {
 		e.preventDefault();
@@ -38,7 +37,7 @@ function Conversation({list, currUser}) {
 	}
 
 	return (
-		<div className='list__design' friend_id={list.members[1]} onClick={handleClick} >
+		<div className='list__design' friend_id={members[1]} onClick={handleClick} >
 			{user?.username}
 		</div>
 	)

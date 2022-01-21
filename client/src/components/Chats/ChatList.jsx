@@ -1,10 +1,11 @@
-import axios from 'axios';
+
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
 
-import { access, chatwith } from '../../redux/actions/accessAction';
+import { access } from '../../redux/actions/accessAction';
+import { getDataAPI } from '../../utils/fetchData';
 import './chat.css';
 import Conversation from './ConversationDisplay';
 
@@ -17,23 +18,29 @@ function ChatList() {
 	useEffect(() => {
 		const getConversations = async () => {
 			try {
-				const res = await axios.get(`/api/conversations/${auth.user._id}`)
-				setChatContacts(res.data)
-				dispatch(chatwith(res.data))
+				const res = await getDataAPI('conversations', auth.user._id)
+				setChatContacts(res)
 			} catch (error) {
 				console.log(error)
 			}
 		}
 		
 		getConversations();
-	}, [auth, dispatch])
+	}, [auth])
 
 	return (
 		<div className="chat__list">
-			{chatContacts.map((resp, index) => {
+			{chatContacts.map((list, index) => {
 				return (
-					<div key={index} onClick={() => dispatch(access(true))}>
-						<Conversation list={resp} currUser={auth.user._id} />
+					<div 
+						style={{position: 'relative'}} 
+						key={index} 
+						onClick={() => dispatch(access(list))}
+					>
+						<Conversation 
+							members={list?.members} 
+							currUser={auth.user._id} 
+						/>
 					</div>
 				)
 			})}

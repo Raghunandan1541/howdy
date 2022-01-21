@@ -1,7 +1,13 @@
 
+import { useEffect, useRef } from 'react'
 import { format } from 'timeago.js'
 
-function MessageDisplay({ message, own, scrollRef }) {
+function MessageDisplay({ message, own }) {
+	
+	const scrollRef = useRef()
+	useEffect(() => {
+		scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, []);
 
 	return (
 		<div ref={scrollRef} className="msg__container">

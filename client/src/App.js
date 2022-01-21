@@ -7,6 +7,8 @@ import Login from './components/Login_Register/Login'
 import Register from './components/Login_Register/Register';
 
 import { refreshToken } from './redux/actions/authAction'
+import Contact from './components/Contact/Contact';
+import ChatList from './components/Chats/ChatList';
 
 const App = () => {
 	
@@ -22,6 +24,8 @@ const App = () => {
 		<Router>
 			<Route exact path="/" component={auth.token ? Home : Login } />
 			<Route path="/register" component={Register} />
+			<Route path="/contact" component={Contact} />
+			<Route path="/chat" component={ChatList} />
 		</Router>
 	);
 };

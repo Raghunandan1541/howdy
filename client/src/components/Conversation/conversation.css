@@ -14,9 +14,18 @@
 	outline: none;
 }
 
+.username__bar {
+	position: relative;
+	top: 0;
+	padding: 0.5rem;
+	border-bottom: 1px solid #000000;
+	font-size: 1.3rem;
+}
+
 .contain__messages {
+	position: relative;
 	overflow-y: scroll;
-	height: calc(100vh - 5rem);
+	height: calc(100vh - 7.45rem);
 }
 
 .msg__container {

@@ -5,6 +5,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const path = require('path')
 const socketServer = require('./socketServer')
+const http = require('http');
 
 
 const app = express()
@@ -14,8 +15,10 @@ app.use(cookieParser())
 
 const port = process.env.PORT || 5000
 
+const httpServer = http.createServer(app);
+
 // Socket
-const io = require('socket.io')(8900, {
+const io = require('socket.io')(httpServer, {
 	cors: {
 		origin: true
 	}
@@ -52,6 +55,6 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
 	console.log(`Server is running on http://localhost:${port}`)
 })

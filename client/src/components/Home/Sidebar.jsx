@@ -22,7 +22,7 @@ function Sidebar() {
 			</div>
 			
 			<div className="toggle__list_container">		
-				{isActive ? <Contact /> : <Chat/> }
+				{isActive ? <Contact /> : <Chat /> }
 			</div>
 		</div>
 	)
